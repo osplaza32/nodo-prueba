@@ -75,22 +75,62 @@ function listTeamsIds () {
 
 // 1 Arreglo con los nombres de los equipos y el país al que pertenecen, ordenados alfabéticamente por el nombre de su país de origen.
 function listTeamsByCountry () {
-  // CODE HERE
+  let ordenados = teams.sort(function(teama, teamb){
+    if(teama.name < teamb.name) { return -1; }
+    if(teama.name > teamb.name) { return 1; }
+    return 0;
+})
+  return ordenados.map((equipo)=>{
+    var rObj = [];
+     rObj['name'] = equipo.name
+     rObj['country'] = equipo.country
+     return rObj
+  } )
 }
 
 // 2 Arreglo con los nombres de los equipos ordenados de mayor a menor por la cantidad de victorias en champions league.
 function sortTeamsByWins () {
   // CODE HERE
+  //primero ordenos los winsByTeams de mayor a menor
+  let ordenados = winsByTeams.sort(function(teama, teamb){
+    if(teama.wins < teamb.wins) { return 1; }
+    if(teama.wins > teamb.wins) { return -1; }
+    return 0;
+})
+ let rObj = []
+  ordenados.filter((obj) => rObj.push(teams.find((e)=> e.id == obj.teamId).name))
+  return rObj
 }
 
 // 3 Arreglo de objetos en donde se muestre el nombre de las ligas y la sumatoria de las victorias de los equipos que pertenecen a ellas.
 function leaguesWithWins () {
-  // CODE HERE
+  let ordenados = teamsByLeague.sort(function(teama, teamb){
+    if(teama.leagueId < teamb.leagueId) { return -1; }
+    if(teama.leagueId > teamb.leagueId) { return 1; }
+    return 0;
+})
+var arrEquiposleaguexpuntos = [];
+  ordenados.forEach(element => {
+    var arrEquipoleaguexpuntos = [];
+    arrEquipoleaguexpuntos['leagueId'] = leagues.find((e) => e.id ==  element.leagueId).name
+    arrEquipoleaguexpuntos['score'] = winsByTeams.find((e) => e.teamId == element.teamId).wins
+    arrEquiposleaguexpuntos.push(arrEquipoleaguexpuntos)
+});
+var counts = {};
+arrEquiposleaguexpuntos.forEach((x) => {counts[x.leagueId] = (counts[x.leagueId] || 0)+x.score;});
+return counts
 }
 
 // 4 Objeto en que las claves sean los nombres de las ligas y los valores el nombre del equipo con la menor cantidad de victorias en champions.
 function leaguesWithTeamWithLestWins () {
   // CODE HERE
+  let ordenados = winsByTeams.sort(function(teama, teamb){
+    if(teama.wins < teamb.wins) { return -1; }
+    if(teama.wins > teamb.wins) { return  1; }
+    return 0;
+})
+var arrEquiposleaguexpuntos = [];
+  ordenados.filter((obj) => console.log(teams.find((e)=> e.id == obj.teamId).name));
 }
 
 // 5 Objeto en que las claves sean los nombres de las ligas y los valores el nombre del equipo con la mayor cantidad de victorias en champions.
